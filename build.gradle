@@ -20,6 +20,13 @@ allprojects {
         mavenCentral()
         google()
     }
+    project.ext {
+        targetSdkVersion=25
+        compileSdkVersion=25
+        supportLibraryVersion="25.3.1"
+        buildToolsVersion="26.0.2"
+        minSdkVersion=21
+    }
 }
 
 task clean(type: Delete) {
