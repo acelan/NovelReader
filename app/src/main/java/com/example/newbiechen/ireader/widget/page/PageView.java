@@ -18,6 +18,8 @@ import com.example.newbiechen.ireader.widget.animation.ScrollPageAnim;
 import com.example.newbiechen.ireader.widget.animation.SimulationPageAnim;
 import com.example.newbiechen.ireader.widget.animation.SlidePageAnim;
 
+import static android.support.v4.view.ViewCompat.LAYER_TYPE_HARDWARE;
+
 /**
  * Created by Administrator on 2016/8/29 0029.
  * 原作者的GitHub Project Path:(https://github.com/PeachBlossom/treader)
@@ -76,6 +78,8 @@ public class PageView extends View {
 
     public PageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        //Enable H/W acceleration by default
+        setLayerType(LAYER_TYPE_HARDWARE, null);
     }
 
     @Override

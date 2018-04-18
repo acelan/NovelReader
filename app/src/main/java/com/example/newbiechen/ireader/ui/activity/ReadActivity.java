@@ -244,7 +244,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             mPvPage.setLayerType(LAYER_TYPE_SOFTWARE, null);
         }
-
+        Log.d(TAG,"Layer type = "+mPvPage.getLayerType());
         //获取页面加载器
         mPageLoader = mPvPage.getPageLoader(mCollBook);
         //禁止滑动展示DrawerLayout
