@@ -37,7 +37,7 @@ import io.reactivex.SingleOnSubscribe;
  */
 
 public class BookRepository {
-    private static final String TAG = "CollBookManager";
+    private static final String TAG = "BookRepository";
     private static volatile BookRepository sInstance;
     private DaoSession mSession;
     private CollBookBeanDao mCollBookDao;
