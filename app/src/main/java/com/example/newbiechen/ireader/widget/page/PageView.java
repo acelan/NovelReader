@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
+import com.blankj.ALog;
 import com.example.newbiechen.ireader.model.bean.CollBookBean;
 import com.example.newbiechen.ireader.widget.animation.CoverPageAnim;
 import com.example.newbiechen.ireader.widget.animation.HorizonPageAnim;

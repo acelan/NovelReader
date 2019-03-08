@@ -9,11 +9,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.ALog;
 import com.bumptech.glide.Glide;
 import com.example.newbiechen.ireader.R;
 import com.example.newbiechen.ireader.model.bean.BookDetailBean;
@@ -40,7 +42,8 @@ import butterknife.BindView;
  * Created by newbiechen on 17-5-4.
  */
 
-public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.Presenter>
+public class
+BookDetailActivity extends BaseMVPActivity<BookDetailContract.Presenter>
         implements BookDetailContract.View {
     public static final String RESULT_IS_COLLECTED = "result_is_collected";
 
@@ -118,6 +121,8 @@ public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.Prese
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+
+        ALog.dTag(TAG, "");
         super.initData(savedInstanceState);
         if (savedInstanceState != null) {
             mBookId = savedInstanceState.getString(EXTRA_BOOK_ID);
@@ -194,6 +199,7 @@ public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.Prese
 
     @Override
     protected void processLogic() {
+        ALog.dTag(TAG, "");
         super.processLogic();
         mRefreshLayout.showLoading();
         mPresenter.refreshBookDetail(mBookId);
@@ -201,6 +207,8 @@ public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.Prese
 
     @Override
     public void finishRefresh(BookDetailBean bean) {
+
+        ALog.dTag(TAG, "");
         //封面
         Glide.with(this)
                 .load(Constant.IMG_BASE_URL + bean.getCover())
@@ -235,6 +243,7 @@ public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.Prese
 
         //判断是否收藏
         if (mCollBookBean != null) {
+            ALog.dTag(TAG, "mCollBookBean != null");
             isCollected = true;
 
             mTvChase.setText(getResources().getString(R.string.nb_book_detail_give_up));
@@ -246,13 +255,17 @@ public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.Prese
                     null, null);
             mTvRead.setText("继续阅读");
         } else {
+            ALog.dTag(TAG, "mCollBookBean == null");
             mCollBookBean = bean.getCollBookBean();
         }
     }
 
     @Override
     public void finishHotComment(List<HotCommentBean> beans) {
+
+        ALog.dTag(TAG, "");
         if (beans.isEmpty()) {
+            ALog.dTag(TAG, "beans.isEmpty()");
             return;
         }
         mHotCommentAdapter = new HotCommentAdapter();
@@ -270,6 +283,8 @@ public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.Prese
 
     @Override
     public void finishRecommendBookList(List<BookListBean> beans) {
+
+        ALog.dTag(TAG, "");
         if (beans.isEmpty()) {
             mTvRecommendBookList.setVisibility(View.GONE);
             return;
@@ -290,6 +305,8 @@ public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.Prese
 
     @Override
     public void waitToBookShelf() {
+
+        ALog.dTag(TAG, "");
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setTitle("正在添加到书架中");
@@ -299,6 +316,8 @@ public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.Prese
 
     @Override
     public void errorToBookShelf() {
+
+        ALog.dTag(TAG, "");
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
         }
@@ -307,10 +326,14 @@ public class BookDetailActivity extends BaseMVPActivity<BookDetailContract.Prese
 
     @Override
     public void succeedToBookShelf() {
+
+        ALog.dTag(TAG, "");
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
         }
         ToastUtils.show("加入书架成功");
+        Log.d(TAG,"mCollBookBean.getBookChapters() = " + mCollBookBean.getBookChapters());
+        Log.d(TAG, "Collected = " + BookRepository.getInstance().getCollBook(mCollBookBean.get_id()));
     }
 
     @Override

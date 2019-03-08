@@ -1,5 +1,6 @@
 package com.example.newbiechen.ireader.widget.page;
 
+import com.blankj.ALog;
 import com.example.newbiechen.ireader.model.bean.BookChapterBean;
 import com.example.newbiechen.ireader.model.bean.CollBookBean;
 import com.example.newbiechen.ireader.model.local.BookRepository;
@@ -71,6 +72,7 @@ public class LocalPageLoader extends PageLoader {
     }
 
     private List<TxtChapter> convertTxtChapter(List<BookChapterBean> bookChapters) {
+        ALog.dTag(TAG);
         List<TxtChapter> txtChapters = new ArrayList<>(bookChapters.size());
         for (BookChapterBean bean : bookChapters) {
             TxtChapter chapter = new TxtChapter();
@@ -90,6 +92,8 @@ public class LocalPageLoader extends PageLoader {
      * @throws IOException
      */
     private void loadChapters() throws IOException {
+
+        ALog.dTag(TAG);
         List<TxtChapter> chapters = new ArrayList<>();
         //获取文件流
         RandomAccessFile bookStream = new RandomAccessFile(mBookFile, "r");
@@ -269,6 +273,7 @@ public class LocalPageLoader extends PageLoader {
      * @return
      */
     private byte[] getChapterContent(TxtChapter chapter) {
+        ALog.dTag(TAG);
         RandomAccessFile bookStream = null;
         try {
             bookStream = new RandomAccessFile(mBookFile, "r");
@@ -295,6 +300,7 @@ public class LocalPageLoader extends PageLoader {
      * @return 是否存在章节名
      */
     private boolean checkChapterType(RandomAccessFile bookStream) throws IOException {
+        ALog.dTag(TAG);
         //首先获取128k的数据
         byte[] buffer = new byte[BUFFER_SIZE / 4];
         int length = bookStream.read(buffer, 0, buffer.length);
@@ -318,6 +324,7 @@ public class LocalPageLoader extends PageLoader {
 
     @Override
     public void saveRecord() {
+        ALog.dTag(TAG);
         super.saveRecord();
         //修改当前COllBook记录
         if (mCollBook != null && isChapterListPrepare) {
@@ -334,6 +341,7 @@ public class LocalPageLoader extends PageLoader {
 
     @Override
     public void closeBook() {
+        ALog.dTag(TAG);
         super.closeBook();
         if (mChapterDisp != null) {
             mChapterDisp.dispose();
@@ -343,6 +351,7 @@ public class LocalPageLoader extends PageLoader {
 
     @Override
     public void refreshChapterList() {
+        ALog.dTag(TAG);
         // 对于文件是否存在，或者为空的判断，不作处理。 ==> 在文件打开前处理过了。
         mBookFile = new File(mCollBook.getCover());
         //获取文件编码
@@ -385,6 +394,7 @@ public class LocalPageLoader extends PageLoader {
 
                     @Override
                     public void onSuccess(Void value) {
+                        ALog.dTag(TAG);
                         mChapterDisp = null;
                         isChapterListPrepare = true;
 

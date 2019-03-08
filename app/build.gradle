@@ -70,9 +70,14 @@ dependencies {
     // OpenCC to convert Simp. Chinese to Trad. Chinese
     implementation "com.zqc.opencc.android.lib:lib-opencc-android:0.8.0@aar"
 
+    // ALog
+    implementation 'com.blankj:alog:1.8.0'
+
     // AndroidTagGroup
     implementation 'me.gujun.android.taggroup:library:1.4@aar'
     // Android Leak Analysis
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    // Android Debug Database Library
+    //debugImplementation 'com.amitshekhar.android:debug-db:1.0.3'
 }

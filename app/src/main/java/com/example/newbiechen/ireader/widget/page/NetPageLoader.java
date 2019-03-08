@@ -1,6 +1,7 @@
 package com.example.newbiechen.ireader.widget.page;
 
 
+import com.blankj.ALog;
 import com.example.newbiechen.ireader.model.bean.BookChapterBean;
 import com.example.newbiechen.ireader.model.bean.CollBookBean;
 import com.example.newbiechen.ireader.model.local.BookRepository;
@@ -23,13 +24,14 @@ import java.util.List;
  */
 
 public class NetPageLoader extends PageLoader {
-    private static final String TAG = "PageFactory";
+    private static final String TAG = "NetPageLoader";
 
     public NetPageLoader(PageView pageView, CollBookBean collBook) {
         super(pageView, collBook);
     }
 
     private List<TxtChapter> convertTxtChapter(List<BookChapterBean> bookChapters) {
+        ALog.dTag(TAG, "");
         List<TxtChapter> txtChapters = new ArrayList<>(bookChapters.size());
         for (BookChapterBean bean : bookChapters) {
             TxtChapter chapter = new TxtChapter();
@@ -43,12 +45,14 @@ public class NetPageLoader extends PageLoader {
 
     @Override
     public void refreshChapterList() {
+        ALog.dTag(TAG, "");
         if (mCollBook.getBookChapters() == null) return;
 
         // 将 BookChapter 转换成当前可用的 Chapter
         mChapterList = convertTxtChapter(mCollBook.getBookChapters());
         isChapterListPrepare = true;
 
+        ALog.dTag(TAG, "mChapterList.size() = " + mChapterList.size());
         // 目录加载完成，执行回调操作。
         if (mPageChangeListener != null) {
             mPageChangeListener.onCategoryFinish(mChapterList);
@@ -63,6 +67,7 @@ public class NetPageLoader extends PageLoader {
 
     @Override
     protected BufferedReader getChapterReader(TxtChapter chapter) throws Exception {
+        ALog.dTag(TAG, "");
         File file = new File(Constant.BOOK_CACHE_PATH + mCollBook.get_id()
                 + File.separator + chapter.title + FileUtils.SUFFIX_NB);
         if (!file.exists()) return null;
@@ -74,12 +79,14 @@ public class NetPageLoader extends PageLoader {
 
     @Override
     protected boolean hasChapterData(TxtChapter chapter) {
+        ALog.dTag(TAG, "");
         return BookManager.isChapterCached(mCollBook.get_id(), chapter.title);
     }
 
     // 装载上一章节的内容
     @Override
     boolean parsePrevChapter() {
+        ALog.dTag(TAG, "");
         boolean isRight = super.parsePrevChapter();
 
         if (mStatus == STATUS_FINISH) {
@@ -93,6 +100,7 @@ public class NetPageLoader extends PageLoader {
     // 装载当前章内容。
     @Override
     boolean parseCurChapter() {
+        ALog.dTag(TAG, "");
         boolean isRight = super.parseCurChapter();
 
         if (mStatus == STATUS_LOADING) {
@@ -104,6 +112,7 @@ public class NetPageLoader extends PageLoader {
     // 装载下一章节的内容
     @Override
     boolean parseNextChapter() {
+        ALog.dTag(TAG, "");
         boolean isRight = super.parseNextChapter();
 
         if (mStatus == STATUS_FINISH) {
@@ -119,6 +128,7 @@ public class NetPageLoader extends PageLoader {
      * 加载当前页的前面两个章节
      */
     private void loadPrevChapter() {
+        ALog.dTag(TAG, "");
         if (mPageChangeListener != null) {
             int end = mCurChapterPos;
             int begin = end - 2;
@@ -134,6 +144,7 @@ public class NetPageLoader extends PageLoader {
      * 加载前一页，当前页，后一页。
      */
     private void loadCurrentChapter() {
+        ALog.dTag(TAG, "");
         if (mPageChangeListener != null) {
             int begin = mCurChapterPos;
             int end = mCurChapterPos;
@@ -162,6 +173,7 @@ public class NetPageLoader extends PageLoader {
      * 加载当前页的后两个章节
      */
     private void loadNextChapter() {
+        ALog.dTag(TAG, "");
         if (mPageChangeListener != null) {
 
             // 提示加载后两章
@@ -183,6 +195,7 @@ public class NetPageLoader extends PageLoader {
     }
 
     private void requestChapters(int start, int end) {
+        ALog.dTag(TAG, "");
         // 检验输入值
         if (start < 0) {
             start = 0;
@@ -210,6 +223,7 @@ public class NetPageLoader extends PageLoader {
 
     @Override
     public void saveRecord() {
+        ALog.dTag(TAG, "");
         super.saveRecord();
         if (mCollBook != null && isChapterListPrepare) {
             //表示当前CollBook已经阅读

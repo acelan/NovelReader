@@ -2,6 +2,7 @@ package com.example.newbiechen.ireader.model.remote;
 
 import android.util.Log;
 
+import com.blankj.ALog;
 import com.example.newbiechen.ireader.utils.Constant;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class RemoteHelper {
     private Retrofit mRetrofit;
     private OkHttpClient mOkHttpClient;
     private RemoteHelper(){
+        ALog.dTag(TAG);
         mOkHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(
                         new Interceptor() {
@@ -33,7 +35,8 @@ public class RemoteHelper {
 
                                 //在这里获取到request后就可以做任何事情了
                                 Response response = chain.proceed(request);
-                                Log.d(TAG, "intercept: "+request.url().toString());
+
+                                ALog.dTag(TAG, "intercept: "+request.url().toString());
                                 return response;
                             }
                         }
@@ -48,6 +51,7 @@ public class RemoteHelper {
     }
 
     public static RemoteHelper getInstance(){
+        ALog.dTag(TAG);
         if (sInstance == null){
             synchronized (RemoteHelper.class){
                 if (sInstance == null){

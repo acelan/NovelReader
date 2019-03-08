@@ -1,5 +1,6 @@
 package com.example.newbiechen.ireader.presenter;
 
+import com.blankj.ALog;
 import com.example.newbiechen.ireader.RxBus;
 import com.example.newbiechen.ireader.model.bean.BookChapterBean;
 import com.example.newbiechen.ireader.model.bean.BookDetailBean;
@@ -35,6 +36,7 @@ public class BookShelfPresenter extends RxPresenter<BookShelfContract.View>
 
     @Override
     public void refreshCollBooks() {
+        ALog.dTag(TAG);
         List<CollBookBean> collBooks = BookRepository
                 .getInstance().getCollBooks();
         mView.finishRefresh(collBooks);
@@ -42,6 +44,7 @@ public class BookShelfPresenter extends RxPresenter<BookShelfContract.View>
 
     @Override
     public void createDownloadTask(CollBookBean collBookBean) {
+        ALog.dTag(TAG);
         DownloadTaskBean task = new DownloadTaskBean();
         task.setTaskName(collBookBean.getTitle());
         task.setBookId(collBookBean.get_id());
@@ -54,6 +57,7 @@ public class BookShelfPresenter extends RxPresenter<BookShelfContract.View>
 
     @Override
     public void loadRecommendBooks(String gender) {
+        ALog.dTag(TAG);
         Disposable disposable = RemoteRepository.getInstance()
                 .getRecommendBooks(gender)
                 .doOnSuccess(new Consumer<List<CollBookBean>>() {
@@ -86,6 +90,7 @@ public class BookShelfPresenter extends RxPresenter<BookShelfContract.View>
     //需要修改
     @Override
     public void updateCollBooks(List<CollBookBean> collBookBeans) {
+        ALog.dTag(TAG);
         if (collBookBeans == null || collBookBeans.isEmpty()) return;
         List<CollBookBean> collBooks = new ArrayList<>(collBookBeans);
         List<Single<BookDetailBean>> observables = new ArrayList<>(collBooks.size());
@@ -152,6 +157,7 @@ public class BookShelfPresenter extends RxPresenter<BookShelfContract.View>
 
     //更新每个CollBook的目录
     private void updateCategory(List<CollBookBean> collBookBeans){
+        ALog.dTag(TAG);
         List<Single<List<BookChapterBean>>> observables = new ArrayList<>(collBookBeans.size());
         for (CollBookBean bean : collBookBeans){
             observables.add(

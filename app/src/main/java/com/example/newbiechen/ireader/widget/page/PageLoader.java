@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.text.TextPaint;
 
+import com.blankj.ALog;
 import com.example.newbiechen.ireader.model.bean.BookRecordBean;
 import com.example.newbiechen.ireader.model.bean.CollBookBean;
 import com.example.newbiechen.ireader.model.local.BookRepository;
@@ -143,6 +144,7 @@ public abstract class PageLoader {
 
     /*****************************init params*******************************/
     public PageLoader(PageView pageView, CollBookBean collBook) {
+        ALog.dTag(TAG, "");
         mPageView = pageView;
         mContext = pageView.getContext();
         mCollBook = collBook;
@@ -159,6 +161,7 @@ public abstract class PageLoader {
     }
 
     private void initData() {
+        ALog.dTag(TAG, "");
         // 获取配置管理器
         mSettingManager = ReadSettingManager.getInstance();
         // 获取配置参数
@@ -547,6 +550,7 @@ public abstract class PageLoader {
      * 保存阅读记录
      */
     public void saveRecord() {
+        ALog.dTag(TAG, "");
 
         if (mChapterList.isEmpty()) {
             return;
@@ -570,8 +574,20 @@ public abstract class PageLoader {
      * 初始化书籍
      */
     private void prepareBook() {
-        mBookRecord = BookRepository.getInstance()
-                .getBookRecord(mCollBook.get_id());
+        ALog.dTag(TAG, "");
+
+        /**
+         * 未被收歲 就不要從 DB 裡讀
+         * 表非此書曾被收歲過 被刪掉後 又從網路上搜尋
+         */
+        if (BookRepository.getInstance().getCollBook(mCollBook.get_id()) != null) {
+            ALog.dTag(TAG, "BookRepository.getInstance().getCollBook(mCollBook.get_id()) != null");
+            mBookRecord = BookRepository.getInstance()
+                    .getBookRecord(mCollBook.get_id());
+        } else {
+            ALog.dTag(TAG, "BookRepository.getInstance().getCollBook(mCollBook.get_id()) == null");
+
+        }
 
         if (mBookRecord == null) {
             mBookRecord = new BookRecordBean();
@@ -677,6 +693,7 @@ public abstract class PageLoader {
      * @return
      */
     private List<TxtPage> loadPageList(int chapterPos) throws Exception {
+        ALog.dTag(TAG, "mChapterList.size() = " + mChapterList.size() + " chapterPos = " + chapterPos);
         // 获取章节
         TxtChapter chapter = mChapterList.get(chapterPos);
         // 判断章节是否存在
@@ -737,6 +754,7 @@ public abstract class PageLoader {
                 //根据状态不一样，数据不一样
                 if (mStatus != STATUS_FINISH) {
                     if (isChapterListPrepare) {
+                        ALog.dTag(TAG, "mChapterList.size() = " + mChapterList.size() + " chapterPos = " + mCurChapterPos);
                         canvas.drawText(mChapterList.get(mCurChapterPos).getTitle()
                                 , mMarginWidth, tipTop, mTipPaint);
                     }

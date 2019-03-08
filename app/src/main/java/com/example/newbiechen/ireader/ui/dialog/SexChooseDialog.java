@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.blankj.ALog;
 import com.example.newbiechen.ireader.R;
 import com.example.newbiechen.ireader.RxBus;
 import com.example.newbiechen.ireader.event.RecommendBookEvent;
@@ -24,6 +25,7 @@ import butterknife.Unbinder;
  */
 
 public class SexChooseDialog extends Dialog {
+    private static final String TAG = "SexChooseDialog";
     @BindView(R.id.choose_iv_close)
     ImageView mIvClose;
     @BindView(R.id.choose_btn_boy)
@@ -34,10 +36,12 @@ public class SexChooseDialog extends Dialog {
     private Unbinder unbinder;
     public SexChooseDialog(Context context) {
         super(context,R.style.CommonDialog);
+        ALog.dTag(TAG);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ALog.dTag(TAG);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_sex_choose);
         unbinder = ButterKnife.bind(this);
@@ -45,6 +49,7 @@ public class SexChooseDialog extends Dialog {
     }
 
     private void setUpWindow(){
+        ALog.dTag(TAG);
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -54,6 +59,7 @@ public class SexChooseDialog extends Dialog {
 
     @OnClick({R.id.choose_iv_close,R.id.choose_btn_boy,R.id.choose_btn_girl})
     public void onClick(View view){
+        ALog.dTag(TAG);
         switch (view.getId()){
             case R.id.choose_btn_boy:
                 //保存到SharePreference中
@@ -75,6 +81,7 @@ public class SexChooseDialog extends Dialog {
 
     @Override
     public void onDetachedFromWindow() {
+        ALog.dTag(TAG);
         super.onDetachedFromWindow();
         unbinder.unbind();
     }

@@ -3,8 +3,10 @@ package com.example.newbiechen.ireader.model.bean;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Keep;
 import android.util.Log;
 
+import com.blankj.ALog;
 import com.example.newbiechen.ireader.App;
 import com.example.newbiechen.ireader.utils.StringUtils;
 import com.google.gson.annotations.SerializedName;
@@ -29,6 +31,7 @@ import com.example.newbiechen.ireader.model.gen.CollBookBeanDao;
  */
 @Entity
 public class CollBookBean implements Parcelable{
+    private static final String TAG = "CollBookBean";
 
     public static final int STATUS_UNCACHE = 0; //未缓存
     public static final int STATUS_CACHING = 1; //正在缓存
@@ -224,17 +227,21 @@ public class CollBookBean implements Parcelable{
     }
 
     public void setBookChapters(List<BookChapterBean> beans){
+        ALog.dTag(TAG, "beans.size() = " + beans.size());
         bookChapterList = beans;
         for (BookChapterBean bean : bookChapterList){
             bean.setBookId(get_id());
         }
     }
 
-    public List<BookChapterBean> getBookChapters(){
+    public List<BookChapterBean> getBookChapters() {
+        ALog.dTag(TAG, "");
         if (daoSession == null){
+            ALog.dTag(TAG, "daoSession == null, bookChapterList.size() = " + bookChapterList.size());
             return bookChapterList;
         }
         else {
+            ALog.dTag(TAG, "daoSession != null");
             return getBookChapterList();
         }
     }
@@ -261,7 +268,6 @@ public class CollBookBean implements Parcelable{
         }
         return bookChapterList;
     }
-
 
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     @Generated(hash = 1077762221)

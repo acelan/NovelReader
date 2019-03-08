@@ -31,6 +31,7 @@ import java.util.concurrent.Executors;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import com.blankj.ALog;
 
 /**
  * Created by newbiechen on 17-5-10.
@@ -159,6 +160,7 @@ public class DownloadService extends BaseService {
                     String taskName = newTask.getTaskName()
                             + getString(R.string.nb_download_chapter_scope,
                             downloadTask.getLastChapter(), newTask.getLastChapter());
+                    ALog.dTag(TAG, taskName);
                     //重置任务
                     newTask.setBookChapters(remainChapterBeans);
                     newTask.setTaskName(taskName);
@@ -244,6 +246,7 @@ public class DownloadService extends BaseService {
                     break;
                 }
 
+                ALog.dTag(TAG, bookChapterBean.getTitle() + " : " + bookChapterBean.getLink().toString());
                 //加载数据
                 result = loadChapter(taskEvent.getBookId(),bookChapterBean);
                 //章节加载完成

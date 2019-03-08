@@ -1,5 +1,6 @@
 package com.example.newbiechen.ireader.model.remote;
 
+import com.blankj.ALog;
 import com.example.newbiechen.ireader.model.bean.BookChapterBean;
 import com.example.newbiechen.ireader.model.bean.BookDetailBean;
 import com.example.newbiechen.ireader.model.bean.ChapterInfoBean;
@@ -48,6 +49,7 @@ public class RemoteRepository {
     }
 
     public static RemoteRepository getInstance(){
+        ALog.dTag(TAG);
         if (sInstance == null){
             synchronized (RemoteHelper.class){
                 if (sInstance == null){
@@ -59,17 +61,22 @@ public class RemoteRepository {
     }
 
     public Single<List<CollBookBean>> getRecommendBooks(String gender){
+        ALog.dTag(TAG);
         return mBookApi.getRecommendBookPackage(gender)
                 .map(bean -> bean.getBooks());
     }
 
     public Single<List<BookChapterBean>> getBookChapters(String bookId){
+        ALog.dTag(TAG, "bookId = " + bookId);
         return mBookApi.getBookChapterPackage(bookId, "chapter")
                 .map(bean -> {
                     if (bean.getMixToc() == null){
+                        ALog.dTag(TAG, "bean.getMixToc() == null");
                         return new ArrayList<BookChapterBean>(1);
                     }
                     else {
+                        ALog.dTag(TAG, "bean.getMixToc() != null");
+                        ALog.dTag(TAG, "bean.getMixToc().getChapters().size() = " + bean.getMixToc().getChapters().size());
                         return bean.getMixToc().getChapters();
                     }
                 });
@@ -81,6 +88,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<ChapterInfoBean> getChapterInfo(String url){
+        ALog.dTag(TAG, "url = " + url);
         return mBookApi.getChapterInfoPackage(url)
                 .map(bean -> bean.getChapter());
     }
@@ -89,37 +97,44 @@ public class RemoteRepository {
 
 
     public Single<List<BookCommentBean>> getBookComment(String block, String sort, int start, int limit, String distillate){
+        ALog.dTag(TAG);
 
         return mBookApi.getBookCommentList(block,"all",sort,"all",start+"",limit+"",distillate)
                 .map((listBean)-> listBean.getPosts());
     }
 
     public Single<List<BookHelpsBean>> getBookHelps(String sort, int start, int limit, String distillate){
+        ALog.dTag(TAG);
         return mBookApi.getBookHelpList("all",sort,start+"",limit+"",distillate)
                 .map((listBean)-> listBean.getHelps());
     }
 
     public Single<List<BookReviewBean>> getBookReviews(String sort, String bookType, int start, int limited, String distillate){
+        ALog.dTag(TAG);
         return mBookApi.getBookReviewList("all",sort,bookType,start+"",limited+"",distillate)
                 .map(listBean-> listBean.getReviews());
     }
 
     public Single<CommentDetailBean> getCommentDetail(String detailId){
+        ALog.dTag(TAG, "bookId = " + detailId);
         return mBookApi.getCommentDetailPackage(detailId)
                 .map(bean -> bean.getPost());
     }
 
     public Single<ReviewDetailBean> getReviewDetail(String detailId){
+        ALog.dTag(TAG, "bookId = " + detailId);
         return mBookApi.getReviewDetailPacakge(detailId)
                 .map(bean -> bean.getReview());
     }
 
     public Single<HelpsDetailBean> getHelpsDetail(String detailId){
+        ALog.dTag(TAG, "bookId = " + detailId);
         return mBookApi.getHelpsDetailPackage(detailId)
                 .map(bean -> bean.getHelp());
     }
 
     public Single<List<CommentBean>> getBestComments(String detailId){
+        ALog.dTag(TAG, "bookId = " + detailId);
         return mBookApi.getBestCommentPackage(detailId)
                 .map(bean -> bean.getComments());
     }
@@ -132,6 +147,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<CommentBean>> getDetailComments(String detailId, int start, int limit){
+        ALog.dTag(TAG, "bookId = " + detailId);
         return mBookApi.getCommentPackage(detailId,start+"",limit+"")
                 .map(bean -> bean.getComments());
     }
@@ -144,6 +160,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<CommentBean>> getDetailBookComments(String detailId, int start, int limit){
+        ALog.dTag(TAG, "bookId = " + detailId);
         return mBookApi.getBookCommentPackage(detailId,start+"",limit+"")
                 .map(bean -> bean.getComments());
     }
@@ -154,6 +171,8 @@ public class RemoteRepository {
      * @return
      */
     public Single<BookSortPackage> getBookSortPackage(){
+
+        ALog.dTag(TAG);
         return mBookApi.getBookSortPackage();
     }
 
@@ -162,6 +181,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<BookSubSortPackage> getBookSubSortPackage(){
+        ALog.dTag(TAG);
         return mBookApi.getBookSubSortPackage();
     }
 
@@ -176,6 +196,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<SortBookBean>> getSortBooks(String gender,String type,String major,String minor,int start,int limit){
+        ALog.dTag(TAG);
         return mBookApi.getSortBookPackage(gender, type, major, minor, start, limit)
                 .map(bean -> bean.getBooks());
     }
@@ -187,6 +208,8 @@ public class RemoteRepository {
      * @return
      */
     public Single<BillboardPackage> getBillboardPackage(){
+
+        ALog.dTag(TAG);
         return mBookApi.getBillboardPackage();
     }
 
@@ -196,6 +219,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<BillBookBean>> getBillBooks(String billId){
+        ALog.dTag(TAG, "bookId = " + billId);
         return mBookApi.getBillBookPackage(billId)
                 .map(bean -> bean.getRanking().getBooks());
     }
@@ -215,6 +239,7 @@ public class RemoteRepository {
     public Single<List<BookListBean>> getBookLists(String duration, String sort,
                                                    int start, int limit,
                                                    String tag, String gender){
+        ALog.dTag(TAG);
         return mBookApi.getBookListPackage(duration, sort, start+"", limit+"", tag, gender)
                 .map(bean -> bean.getBookLists());
     }
@@ -224,6 +249,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<BookTagBean>> getBookTags(){
+        ALog.dTag(TAG);
         return mBookApi.getBookTagPackage()
                 .map(bean -> bean.getData());
     }
@@ -234,21 +260,25 @@ public class RemoteRepository {
      * @return
      */
     public Single<BookListDetailBean> getBookListDetail(String detailId){
+        ALog.dTag(TAG, "bookId = " + detailId);
         return mBookApi.getBookListDetailPackage(detailId)
                 .map(bean -> bean.getBookList());
     }
 
     /***************************************书籍详情**********************************************/
     public Single<BookDetailBean> getBookDetail(String bookId){
+        ALog.dTag(TAG, "bookId = " + bookId);
         return mBookApi.getBookDetail(bookId);
     }
 
     public Single<List<HotCommentBean>> getHotComments(String bookId){
+        ALog.dTag(TAG, "bookId = " + bookId);
         return mBookApi.getHotCommnentPackage(bookId)
                 .map(bean -> bean.getReviews());
     }
 
     public Single<List<BookListBean>> getRecommendBookList(String bookId,int limit){
+        ALog.dTag(TAG, "bookId = " + bookId);
         return mBookApi.getRecommendBookListPackage(bookId,limit+"")
                 .map(bean -> bean.getBooklists());
     }
@@ -258,6 +288,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<String>> getHotWords(){
+        ALog.dTag(TAG);
         return mBookApi.getHotWordPackage()
                 .map(bean -> bean.getHotWords());
     }
@@ -268,6 +299,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<String>> getKeyWords(String query){
+        ALog.dTag(TAG, "query = " + query);
         return mBookApi.getKeyWordPacakge(query)
                 .map(bean -> bean.getKeywords());
 
@@ -279,6 +311,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<SearchBookPackage.BooksBean>> getSearchBooks(String query){
+        ALog.dTag(TAG, "query = " + query);
         return mBookApi.getSearchBookPackage(query)
                 .map(bean -> bean.getBooks());
     }

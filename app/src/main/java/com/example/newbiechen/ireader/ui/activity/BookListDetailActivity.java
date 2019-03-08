@@ -116,7 +116,7 @@ public class BookListDetailActivity extends BaseMVPActivity<BookListDetailContra
 
     protected void onItemClick(View v, int p){
         BookListDetailBean.BooksBean.BookBean book = mBooksList.get(p).getBook();
-        BookDetailActivity.startActivity(this, book.get_id());
+        BookDetailActivity.startActivity( this, book.get_id());
     }
 
     @Override
